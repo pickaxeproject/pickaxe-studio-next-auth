@@ -1,28 +1,57 @@
 <p align="center">
-  <br/>
-  <a href="https://authjs.dev" target="_blank">
-    <img height="64px" src="https://authjs.dev/img/logo/logo-sm.png" />
-  </a>
-  <a href="https://supabase.com" target="_blank">
-    <img height="64px" src="https://authjs.dev/img/adapters/supabase.svg"/>
-  </a>
-  <h3 align="center"><b>Supabase Adapter</b> - NextAuth.js / Auth.js</a></h3>
-  <p align="center" style="align: center;">
-    <a href="https://npm.im/@auth/supabase-adapter">
-      <img src="https://img.shields.io/badge/TypeScript-blue?style=flat-square" alt="TypeScript" />
-    </a>
-    <a href="https://npm.im/@auth/supabase-adapter">
-      <img alt="npm" src="https://img.shields.io/npm/v/@auth/supabase-adapter?color=green&label=@auth/supabase-adapter&style=flat-square">
-    </a>
-    <a href="https://www.npmtrends.com/@auth/supabase-adapter">
-      <img src="https://img.shields.io/npm/dm/@auth/supabase-adapter?label=%20downloads&style=flat-square" alt="Downloads" />
-    </a>
-    <a href="https://github.com/nextauthjs/next-auth/stargazers">
-      <img src="https://img.shields.io/github/stars/nextauthjs/next-auth?style=flat-square" alt="Github Stars" />
-    </a>
-  </p>
+	 <br/>
+	 <a href="https://next-auth.js.org" target="_blank">
+		<img height="64px" src="https://next-auth.js.org/img/logo/logo-sm.png" /></a><img height="64px" src="./logo.svg" />
+	 <h3 align="center"><b>Supabase Adapter</b> - NextAuth.js</h3>
+	 <p align="center">
+	 Open Source. Full Stack. Own Your Data.
+	 </p>
+	 <p align="center" style="align: center;">
+			<img src="https://github.com/nextauthjs/next-auth/actions/workflows/release.yml/badge.svg?branch=main" alt="Build Test" />
+			<img src="https://img.shields.io/bundlephobia/minzip/@next-auth/supabase-adapter/latest" alt="Bundle Size"/>
+			<img src="https://img.shields.io/npm/v/@next-auth/supabase-adapter" alt="@next-auth/supabase-adapter Version" />
+	 </p>
 </p>
 
----
+## Overview
 
-Check out the documentation at [authjs.dev](https://authjs.dev/reference/adapter/supabase).
+This is the Supabase Adapter for [`next-auth`](https://next-auth.js.org). This package can only be used in conjunction with the primary `next-auth` package. It is not a standalone package.
+
+You can find more Supabase information in the docs at [next-auth.js.org/adapters/supabase](https://next-auth.js.org/adapters/supabase).
+
+## Getting Started
+
+1. Install `@supabase/supabase-js`, `next-auth` and `@next-auth/supabase-adapter`.
+
+```js
+npm install @supabase/supabase-js next-auth @next-auth/supabase-adapter
+```
+
+2. Add this adapter to your `pages/api/[...nextauth].js` next-auth configuration object.
+
+```js
+import NextAuth from "next-auth"
+import { SupabaseAdapter } from "@next-auth/supabase-adapter"
+
+// For more information on each option (and a full list of options) go to
+// https://next-auth.js.org/configuration/options
+export default NextAuth({
+  // https://next-auth.js.org/configuration/providers
+  providers: [
+    // ...
+  ],
+  adapter: SupabaseAdapter({
+    url: process.env.NEXT_PUBLIC_SUPABASE_URL,
+    secret: process.env.SUPABASE_SERVICE_ROLE_KEY,
+  }),
+  // ...
+})
+```
+
+## Contributing
+
+We're open to all community contributions! If you'd like to contribute in any way, please read our [Contributing Guide](https://github.com/nextauthjs/next-auth/blob/main/CONTRIBUTING.md).
+
+## License
+
+ISC

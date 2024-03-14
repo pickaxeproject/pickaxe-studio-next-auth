@@ -1,6 +1,6 @@
 name: Bug report (Provider)
 description: Create a provider-specific report
-labels: [triage, bug, providers]
+labels: [triage, providers]
 body:
   - type: markdown
     attributes:
@@ -25,23 +25,17 @@ body:
         - "Custom provider"
         - "42 School"
         - "Apple"
-        - "Asgardeo"
         - "Atlassian"
         - "Auth0"
         - "Authentik"
         - "Azure Active Directory"
         - "Azure Active Directory B2C"
-        - "Azure DevOps"
         - "Battlenet"
-        - "Beyond Identity"
         - "Box"
         - "Bungie"
-        - "ClickUp"
         - "Cognito"
         - "Coinbase"
-        - "Descope"
         - "Discord"
-        - "Dribbble"
         - "Dropbox"
         - "EVE Online"
         - "Facebook"
@@ -60,11 +54,9 @@ body:
         - "LinkedIn"
         - "Mailchimp"
         - "Mail.ru"
-        - "Mastodon"
         - "Medium"
         - "Naver"
         - "Netlify"
-        - "Notion"
         - "Okta"
         - "OneLogin"
         - "Osso"
@@ -76,13 +68,11 @@ body:
         - "Slack"
         - "Spotify"
         - "Strava"
-        - "Tiktok"
         - "Todoist"
         - "Trakt"
         - "Twitch"
         - "Twitter"
         - "Vk"
-        - "Webex"
         - "Wordpress"
         - "WorkOS"
         - "Yandex"
@@ -96,8 +86,9 @@ body:
       description: |
         Run this command in your project's root folder and paste the result:
 
-        `npx envinfo --system --binaries --browsers --npmPackages "{next,react,next-auth,@auth/*}"`
-
+        ```sh
+        npx envinfo --system --binaries --browsers --npmPackages "next,react,next-auth"
+        ```
         Alternatively, you can manually gather the version information from your package.json for these packages: "next", "react" and "next-auth". Please also mention your OS and Node.js version, as well as the browser you are using.
     validations:
       required: true

@@ -1,8 +1,8 @@
 {
-  "name": "@auth/mikro-orm-adapter",
-  "version": "1.5.0",
-  "description": "MikroORM adapter for Auth.js",
-  "homepage": "https://authjs.dev",
+  "name": "@next-auth/mikro-orm-adapter",
+  "version": "3.0.1",
+  "description": "MikroORM adapter for next-auth.",
+  "homepage": "https://next-auth.js.org",
   "repository": "https://github.com/nextauthjs/next-auth",
   "bugs": {
     "url": "https://github.com/nextauthjs/next-auth/issues"
@@ -11,20 +11,7 @@
   "contributors": [
     "Balázs Orbán <info@balazsorban.com>"
   ],
-  "type": "module",
-  "types": "./index.d.ts",
-  "files": [
-    "*.js",
-    "*.d.ts*",
-    "lib",
-    "src"
-  ],
-  "exports": {
-    ".": {
-      "types": "./index.d.ts",
-      "import": "./index.js"
-    }
-  },
+  "main": "dist/index.js",
   "license": "ISC",
   "keywords": [
     "next-auth",
@@ -37,17 +24,30 @@
     "access": "public"
   },
   "scripts": {
-    "test": "vitest -c ../utils/vitest.config.ts",
+    "test": "jest --runInBand",
     "build": "tsc"
   },
+  "files": [
+    "README.md",
+    "dist"
+  ],
   "peerDependencies": {
-    "@mikro-orm/core": "^5"
+    "@mikro-orm/core": "^5",
+    "next-auth": "^4"
   },
   "devDependencies": {
     "@mikro-orm/core": "^5",
-    "@mikro-orm/sqlite": "^5"
+    "@mikro-orm/sqlite": "^5",
+    "@next-auth/adapter-test": "workspace:*",
+    "@next-auth/tsconfig": "workspace:*",
+    "@types/uuid": ">=8",
+    "jest": "^29",
+    "next-auth": "workspace:*"
   },
   "dependencies": {
-    "@auth/core": "workspace:*"
+    "uuid": "^9"
+  },
+  "jest": {
+    "preset": "@next-auth/adapter-test/jest"
   }
 }

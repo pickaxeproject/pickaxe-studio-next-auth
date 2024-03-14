@@ -39,8 +39,6 @@
   align-items: center;
   justify-content: center;
   padding: 4rem 1rem 0 1rem;
-  flex-wrap: wrap;
-  gap: 1rem;
 }
 
 .button {
@@ -92,7 +90,7 @@
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
   font-size: 1rem;
-  white-space: pre-line;
+  white-space: nowrap;
   text-align: center;
 }
 
@@ -122,37 +120,10 @@
 
 .heroClerk {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   font-size: 1.2rem;
   position: relative;
-  z-index: 2;
-}
-
-.heroClerk div {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-@media screen and (max-width: 689px) {
-  .heroClerk div {
-    flex-direction: column;
-  }
-}
-
-.sponsoredBadge {
-  font-size: 0.6rem;
-  line-height: 1rem;
-  border-radius: 2rem;
-  padding-inline: 0.5rem;
-  padding-block: 0.25rem;
-  background-color: rgb(229 231 235 / 0.5) !important;
-  color: #696969;
-}
-
-[data-theme="dark"] .sponsoredBadge {
-  background-color: #242526 !important;
+  z-index: 1000;
 }

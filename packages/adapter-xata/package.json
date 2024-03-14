@@ -1,26 +1,14 @@
 {
-  "name": "@auth/xata-adapter",
-  "version": "0.6.0",
-  "description": "Xata adapter for Auth.js",
-  "homepage": "https://authjs.dev",
+  "name": "@next-auth/xata-adapter",
+  "version": "0.2.0",
+  "description": "Xata adapter for next-auth.",
+  "homepage": "https://next-auth.js.org",
   "repository": "https://github.com/nextauthjs/next-auth",
   "bugs": {
     "url": "https://github.com/nextauthjs/next-auth/issues"
   },
   "author": "Tejas Kumar",
-  "type": "module",
-  "types": "./index.d.ts",
-  "files": [
-    "*.js",
-    "*.d.ts*",
-    "src"
-  ],
-  "exports": {
-    ".": {
-      "types": "./index.d.ts",
-      "import": "./index.js"
-    }
-  },
+  "main": "dist/index.js",
   "license": "ISC",
   "keywords": [
     "next-auth",
@@ -34,15 +22,25 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "vitest -c ../utils/vitest.config.ts"
+    "test": "jest"
   },
-  "dependencies": {
-    "@auth/core": "workspace:*"
-  },
+  "files": [
+    "README.md",
+    "dist"
+  ],
   "peerDependencies": {
-    "@xata.io/client": ">=0.13.0"
+    "@xata.io/client": ">=0.13.0",
+    "next-auth": "^4"
   },
   "devDependencies": {
-    "@xata.io/client": "^0.13.0"
+    "@next-auth/adapter-test": "workspace:^0.0.0",
+    "@next-auth/tsconfig": "workspace:^0.0.0",
+    "jest": "^27.4.3",
+    "next-auth": "workspace:*",
+    "@xata.io/client": "^0.13.0",
+    "typescript": "^4.7.4"
+  },
+  "jest": {
+    "preset": "@next-auth/adapter-test/jest"
   }
 }

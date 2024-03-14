@@ -1,9 +1,11 @@
 {
-  "extends": "utils/tsconfig.json",
+  "extends": "@next-auth/tsconfig/tsconfig.adapters.json",
   "compilerOptions": {
-    "outDir": ".",
-    "rootDir": "src"
+    "rootDir": "src",
+    "outDir": "dist",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "moduleResolution": "node"
   },
-  "exclude": ["*.js", "*.d.ts"],
-  "include": ["src/**/*"]
+  "exclude": ["tests", "dist", "jest.config.js"]
 }

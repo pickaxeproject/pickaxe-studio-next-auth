@@ -1,6 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "cleanUrls": true,
   "headers": [
     {
       "source": "/(.*)",
@@ -9,6 +8,10 @@
         { "key": "X-Frame-Options", "value": "DENY" },
         { "key": "X-XSS-Protection", "value": "1; mode=block" }
       ]
+    },
+    {
+      "source": "/beta(.*)",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }]
     }
   ],
   "redirects": [
@@ -39,98 +42,68 @@
     },
     {
       "source": "/schemas/adapters",
-      "destination": "/getting-started/adapters",
+      "destination": "/adapters/overview",
       "permanent": true
     },
     {
-      "source": "/new/provider-issue",
-      "destination": "https://github.com/nextauthjs/next-auth/issues/new?assignees=&labels=triage%2Cproviders&template=2_bug_provider.yml",
+      "source": "/tutorials/role-based-login-strategy",
+      "destination": "https://authjs.dev/guides/basics/role-based-authentication",
       "permanent": true
     },
     {
-      "source": "/new/github-discussions",
-      "destination": "https://github.com/nextauthjs/next-auth/discussions/categories/questions",
+      "source": "/adapters/firebase",
+      "destination": "https://authjs.dev/reference/adapter/firebase",
       "permanent": true
     },
     {
-      "source": "/reference/solid-start/:path*",
-      "destination": "/reference/solidstart/:path*",
+      "source": "/adapters/dgraph",
+      "destination": "https://authjs.dev/reference/adapter/dgraph",
       "permanent": true
     },
     {
-      "source": "/",
-      "has": [{ "type": "host", "value": "sveltekit.authjs.dev" }],
-      "destination": "https://authjs.dev/reference/sveltekit"
-    },
-    {
-      "source": "/",
-      "has": [{ "type": "host", "value": "nextjs.authjs.dev" }],
-      "destination": "https://authjs.dev/reference/nextjs"
-    },
-    {
-      "source": "/",
-      "has": [{ "type": "host", "value": "solid-start.authjs.dev" }],
-      "destination": "https://authjs.dev/reference/solid-start"
-    },
-    {
-      "source": "/",
-      "has": [{ "type": "host", "value": "express.authjs.dev" }],
-      "destination": "https://authjs.dev/reference/express"
-    },
-    {
-      "source": "/:path(.*)",
-      "has": [{ "type": "host", "value": "nextjs.authjs.dev" }],
-      "destination": "https://authjs.dev/reference/nextjs"
-    },
-    {
-      "source": "/v5",
-      "has": [{ "type": "host", "value": "nextjs.authjs.dev" }],
-      "destination": "https://authjs.dev/guides/upgrade-to-v5"
-    },
-    {
-      "source": "/:path(.*)",
-      "has": [{ "type": "host", "value": "errors.authjs.dev" }],
-      "destination": "https://authjs.dev/reference/core/errors/:path*"
-    },
-    {
-      "source": "/:path(.*)",
-      "has": [{ "type": "host", "value": "warnings.authjs.dev" }],
-      "destination": "https://authjs.dev/reference/warnings/:path*"
-    },
-    {
-      "source": "/",
-      "has": [{ "type": "host", "value": "adapters.authjs.dev" }],
-      "destination": "https://authjs.dev/getting-started/adapters"
-    },
-    {
-      "source": "/:path(.*)",
-      "has": [{ "type": "host", "value": "adapters.authjs.dev" }],
-      "destination": "https://authjs.dev/reference/adapter/:path*"
-    },
-    {
-      "source": "/",
-      "has": [{ "type": "host", "value": "providers.authjs.dev" }],
-      "destination": "https://authjs.dev/getting-started/providers"
-    },
-    {
-      "source": "/:path(.*)",
-      "has": [{ "type": "host", "value": "providers.authjs.dev" }],
-      "destination": "https://authjs.dev/reference/core/providers/:path"
-    },
-    {
-      "source": "/getting-started/upgrade-to-v4",
-      "destination": "https://next-auth.js.org/getting-started/upgrade-v4",
+      "source": "/adapters/prisma",
+      "destination": "https://authjs.dev/reference/adapter/prisma",
       "permanent": true
     },
     {
-      "source": "/reference/core/providers_:slug(.*)",
-      "destination": "/reference/core/providers/:slug",
+      "source": "/adapters/typeorm",
+      "destination": "https://authjs.dev/reference/adapter/typeorm",
       "permanent": true
     },
     {
-      "source": "/",
-      "has": [{ "type": "host", "value": "discord.authjs.dev" }],
-      "destination": "https://discord.gg/CGAPMawPng"
+      "source": "/adapters/mongodb",
+      "destination": "https://authjs.dev/reference/adapter/mongodb",
+      "permanent": true
+    },
+    {
+      "source": "/adapters/dynamodb",
+      "destination": "https://authjs.dev/reference/adapter/dynamodb",
+      "permanent": true
+    },
+    {
+      "source": "/adapters/fauna",
+      "destination": "https://authjs.dev/reference/adapter/fauna",
+      "permanent": true
+    },
+    {
+      "source": "/adapters/pouchdb",
+      "destination": "https://authjs.dev/reference/adapter/pouchdb",
+      "permanent": true
+    },
+    {
+      "source": "/adapters/overview",
+      "destination": "https://authjs.dev/reference/adapters",
+      "permanent": true
+    },
+    {
+      "source": "/adapters/models",
+      "destination": "https://authjs.dev/reference/adapters#models",
+      "permanent": true
+    },
+    {
+      "source": "/tutorials/refresh-token-rotation",
+      "destination": "https://authjs.dev/guides/basics/refresh-token-rotation",
+      "permanent": true
     }
   ]
 }

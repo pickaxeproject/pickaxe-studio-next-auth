@@ -1,26 +1,14 @@
 {
-  "name": "@auth/upstash-redis-adapter",
-  "version": "1.5.0",
-  "description": "Upstash adapter for Auth.js.",
-  "homepage": "https://authjs.dev",
+  "name": "@next-auth/upstash-redis-adapter",
+  "version": "3.0.3",
+  "description": "Upstash adapter for next-auth. It uses Upstash's connectionless (HTTP based) Redis client.",
+  "homepage": "https://next-auth.js.org",
   "repository": "https://github.com/nextauthjs/next-auth",
   "bugs": {
     "url": "https://github.com/nextauthjs/next-auth/issues"
   },
   "author": "github.com/kay-is",
-  "type": "module",
-  "types": "./index.d.ts",
-  "files": [
-    "*.js",
-    "*.d.ts*",
-    "src"
-  ],
-  "exports": {
-    ".": {
-      "types": "./index.d.ts",
-      "import": "./index.js"
-    }
-  },
+  "main": "dist/index.js",
   "license": "ISC",
   "keywords": [
     "next-auth",
@@ -34,18 +22,31 @@
     "access": "public"
   },
   "scripts": {
-    "test": "./test/test.sh",
+    "test": "jest",
     "build": "tsc"
   },
-  "dependencies": {
-    "@auth/core": "workspace:*"
-  },
+  "files": [
+    "README.md",
+    "dist"
+  ],
   "peerDependencies": {
-    "@upstash/redis": "^1.0.1"
+    "@upstash/redis": "^1.0.1",
+    "next-auth": "^4"
   },
   "devDependencies": {
+    "@next-auth/adapter-test": "workspace:*",
+    "@next-auth/tsconfig": "workspace:*",
     "@types/uuid": "^8.3.3",
     "@upstash/redis": "^1.0.1",
-    "dotenv": "^10.0.0"
+    "dotenv": "^10.0.0",
+    "isomorphic-fetch": "3.0.0",
+    "jest": "^27.4.3",
+    "next-auth": "workspace:*"
+  },
+  "dependencies": {
+    "uuid": "^8.3.2"
+  },
+  "jest": {
+    "preset": "@next-auth/adapter-test/jest"
   }
 }

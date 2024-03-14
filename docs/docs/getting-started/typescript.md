@@ -1,146 +1,147 @@
 ---
+id: typescript
 title: TypeScript
 ---
 
-Auth.js is committed to type-safety, so it's written in TypeScript and comes with its own type definitions to use in projects. Even if you don't use TypeScript, IDEs like VSCode will pick this up to provide you with a better developer experience. While you are typing, you will get suggestions about what certain objects/functions look like, and sometimes links to documentation, examples, and other valuable resources.
+NextAuth.js has its own type definitions to use in your TypeScript projects safely. Even if you don't use TypeScript, IDEs like VSCode will pick this up to provide you with a better developer experience. While you are typing, you will get suggestions about what certain objects/functions look like, and sometimes links to documentation, examples, and other valuable resources.
+
+Check out the example repository showcasing how to use `next-auth` on a Next.js application with TypeScript:  
+https://github.com/nextauthjs/next-auth-example
 
 ---
 
-import Tabs from "@theme/Tabs"
-import TabItem from "@theme/TabItem"
-
 ## Adapters
 
-Check out the [Database Adapters: TypeScript](/getting-started/adapters#typescript) section.
+If you're writing your own custom Adapter, you can take advantage of the types to make sure your implementation conforms to what's expected:
+
+```ts
+import type { Adapter } from "next-auth/adapters"
+
+function MyAdapter(): Adapter {
+  return {
+    // your adapter methods here
+  }
+}
+```
+
+When writing your own custom Adapter in plain JavaScript, note that you can use **JSDoc** to get helpful editor hints and auto-completion like so:
+
+```js
+/** @return { import("next-auth/adapters").Adapter } */
+function MyAdapter() {
+  return {
+    // your adapter methods here
+  }
+}
+```
+
+:::note
+This will work in code editors with a strong TypeScript integration like VSCode or WebStorm. It might not work if you're using more lightweight editors like VIM or Atom.
+:::
 
 ## Module Augmentation
 
-Auth.js libraries come with certain interfaces that are shared across submodules and different Auth.js libraries (For example: `next-auth` and `@auth/prisma-adapter` will rely on types from `@auth/core/types`).
+`next-auth` comes with certain types/interfaces that are shared across submodules. Good examples are `Session` and `JWT`. Ideally, you should only need to create these types at a single place, and TS should pick them up in every location where they are referenced. Luckily, Module Augmentation is exactly that, which can do this for us. Define your shared interfaces in a single place, and get type-safety across your application when using `next-auth` (or one of its submodules).
 
-Good examples of such interfaces are `Session` or `User`. You can use TypeScript's [Module Augmentation](https://www.typescriptlang.org/docs/handbook/declaration-merging.html#module-augmentation) to extend these types to add your own properties.
+### Main module
 
-<details>
-<summary>
-<b>Why not use <a href="https://www.typescriptlang.org/docs/handbook/2/generics.html">generics</a>?</b>
-</summary>
-The interfaces that are shared across submodules are not passed to Auth.js library functions as generics.
+Let's look at `Session`:
 
-Whenever these types are used, the functions always expect to return these formats. With generics, one might be able to override the type in one place, but not the other, which would cause the types to be out of sync with the implementation.
+```ts title="pages/api/auth/[...nextauth].ts"
+import NextAuth from "next-auth"
 
-With module augmentation, you define the types once, and you can be sure that they are always the same where it's expected.
+export default NextAuth({
+  callbacks: {
+    session({ session, token, user }) {
+      return session // The return type will match the one returned in `useSession()`
+    },
+  },
+})
+```
 
-</details>
+```ts title="pages/index.ts"
+import { useSession } from "next-auth/react"
 
-Let's look at `User` for example:
+export default function IndexPage() {
+  // `session` will match the returned value of `callbacks.session()` from `NextAuth()`
+  const { data: session } = useSession()
 
-<Tabs groupId="frameworks" queryString>
-  <TabItem value="next" label="Next.js" default>
+  return (
+    // Your component
+  )
+}
+```
 
-```ts
-// auth.ts
+To extend/augment this type, create a `types/next-auth.d.ts` file in your project:
+
+```ts title="types/next-auth.d.ts"
 import NextAuth from "next-auth"
 
 declare module "next-auth" {
-  interface User {
-    /** The user's postal address. */
-    address: string
+  /**
+   * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
+   */
+  interface Session {
+    user: {
+      /** The user's postal address. */
+      address: string
+    }
   }
 }
-
-export const { auth } = NextAuth({
-  callbacks: {
-    session({ session, token, user }) {
-      // session.user.address is now a valid property, and will be type-checked
-      // in places like `useSession().data.user` or `auth().user`
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          address: user.address,
-        },
-      }
-    },
-  },
-})
 ```
 
-  </TabItem>
-  <TabItem value="sveltekit" label="SvelteKit">
+#### Extend default interface properties
 
-```ts
-// app.d.ts
-import "@auth/sveltekit"
+By default, TypeScript will merge new interface properties and overwrite existing ones. In this case, the default session user properties will be overwritten, with the new one defined above.
 
-declare module "@auth/sveltekit" {
-  interface User {
-    /** comment **/
-    userId: string
+If you want to keep the default session user properties, you need to add them back into the newly declared interface:
+
+```ts title="types/next-auth.d.ts"
+import NextAuth, { DefaultSession } from "next-auth"
+
+declare module "next-auth" {
+  /**
+   * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
+   */
+  interface Session {
+    user: {
+      /** The user's postal address. */
+      address: string
+    } & DefaultSession["user"]
   }
 }
-
-// hooks.server.ts
-export const handleAuth = SvelteKitAuth({
-  providers,
-  callbacks: {
-    session: async ({ session, token }) => {
-      if (token) {
-        session.user.userId = token.sub
-      }
-      return session
-    },
-  },
-})
 ```
-
-  </TabItem>
-  <TabItem value="solidstart" label="SolidStart">
-
-```
-  TODO SolidStart
-```
-
-  </TabItem>
-  <TabItem value="core" label="Vanilla (No Framework)">
-
-```
-  TODO Core
-```
-
-  </TabItem>
-</Tabs>
 
 #### Popular interfaces to augment
 
-Module augmentation is not limited to specific interfaces. You can augment almost anything, but here are some of the more common interfaces that you might need to override in based on your use-case:
-
-<Tabs groupId="frameworks" queryString>
-  <TabItem value="next" label="Next.js" default>
+Although you can augment almost anything, here are some of the more common interfaces that you might want to override in the `next-auth` module:
 
 ```ts
-// auth.ts
-import "next-auth"
+/**
+ * The shape of the user object returned in the OAuth providers' `profile` callback,
+ * or the second parameter of the `session` callback, when using a database.
+ */
+interface User {}
+/**
+ * Usually contains information about the provider being used
+ * and also extends `TokenSet`, which is different tokens returned by OAuth Providers.
+ */
+interface Account {}
+/** The OAuth profile returned from your provider */
+interface Profile {}
+```
 
-// Declare your framework library
-declare module "next-auth" {
-  /**
-   * The shape of the user object returned in the OAuth providers' `profile` callback,
-   * or the second parameter of the `session` callback, when using a database.
-   */
-  interface User {}
-  /**
-   * The shape of the account object returned in the OAuth providers' `account` callback,
-   * Usually contains information about the provider being used, like OAuth tokens (`access_token`, etc).
-   */
-  interface Account {}
+Make sure that the `types` folder is added to [`typeRoots`](https://www.typescriptlang.org/tsconfig/#typeRoots) in your project's `tsconfig.json` file.
 
-  /**
-   * Returned by `useSession`, `auth`, contains information about the active session.
-   */
-  interface Session {}
-}
+### Submodules
+
+The `JWT` interface can be found in the `next-auth/jwt` submodule:
+
+```ts title="types/next-auth.d.ts"
+import { JWT } from "next-auth/jwt"
 
 declare module "next-auth/jwt" {
-  /** Returned by the `jwt` callback and `auth`, when using JWT sessions */
+  /** Returned by the `jwt` callback and `getToken`, when using JWT sessions */
   interface JWT {
     /** OpenID ID Token */
     idToken?: string
@@ -148,39 +149,15 @@ declare module "next-auth/jwt" {
 }
 ```
 
-  </TabItem>
-  <TabItem value="sveltekit" label="SvelteKit" default>
-
-```ts
-// app.d.ts
-import "@auth/sveltekit"
-
-// Declare your framework library
-declare module "@auth/sveltekit" {
-  /**
-   * The shape of the user object returned in the OAuth providers' `profile` callback,
-   * or the second parameter of the `session` callback, when using a database.
-   */
-  interface User {}
-  /**
-   * The shape of the account object returned in the OAuth providers' `account` callback,
-   * Usually contains information about the provider being used, like OAuth tokens (`access_token`, etc).
-   */
-  interface Account {}
-
-  /**
-   * Returned by `useSession`, `auth`, contains information about the active session.
-   */
-  interface Session {}
-}
-```
-
-  </TabItem>
-</Tabs>
-
-The module declaration can be added to any file that is [included](https://www.typescriptlang.org/tsconfig#include) in your project.
-
-## Useful links
+### Useful links
 
 1. [TypeScript documentation: Module Augmentation](https://www.typescriptlang.org/docs/handbook/declaration-merging.html#module-augmentation)
 2. [Digital Ocean: Module Augmentation in TypeScript](https://www.digitalocean.com/community/tutorials/typescript-module-augmentation)
+
+## Contributing
+
+Contributions of any kind are always welcome, especially for TypeScript. Please keep in mind that we are a small team working on this project in our free time. We will try our best to give support, but if you think you have a solution for a problem, please open a PR!
+
+:::note
+When contributing to TypeScript, if the actual JavaScript user API does not change in a breaking manner, we reserve the right to push any TypeScript change in a minor release. This ensures that we can keep on a faster release cycle.
+:::

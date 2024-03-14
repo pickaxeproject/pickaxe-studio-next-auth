@@ -1,9 +1,13 @@
 {
-  "extends": "utils/tsconfig.json",
+  "extends": "@next-auth/tsconfig/tsconfig.adapters.json",
   "compilerOptions": {
-    "outDir": ".",
-    "rootDir": "src"
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "rootDir": "src",
+    "outDir": "dist",
+    "stripInternal": true
   },
-  "exclude": ["*.js", "*.d.ts"],
-  "include": ["src/**/*"]
+  "include": ["src"],
+  "exclude": ["dist", "test", "node_modules"]
 }

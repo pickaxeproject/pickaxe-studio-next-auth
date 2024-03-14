@@ -1,8 +1,8 @@
 {
-  "name": "@auth/neo4j-adapter",
-  "version": "1.6.0",
-  "description": "neo4j adapter for Auth.js",
-  "homepage": "https://authjs.dev",
+  "name": "@next-auth/neo4j-adapter",
+  "version": "1.0.5",
+  "description": "neo4j adapter for next-auth.",
+  "homepage": "https://next-auth.js.org",
   "repository": "https://github.com/nextauthjs/next-auth",
   "bugs": {
     "url": "https://github.com/nextauthjs/next-auth/issues"
@@ -11,19 +11,7 @@
   "contributors": [
     "Balázs Orbán <info@balazsorban.com>"
   ],
-  "type": "module",
-  "types": "./index.d.ts",
-  "files": [
-    "*.js",
-    "*.d.ts*",
-    "src"
-  ],
-  "exports": {
-    ".": {
-      "types": "./index.d.ts",
-      "import": "./index.js"
-    }
-  },
+  "main": "dist/index.js",
   "license": "ISC",
   "keywords": [
     "next-auth",
@@ -36,17 +24,30 @@
     "access": "public"
   },
   "scripts": {
-    "test": "./test/test.sh",
+    "test:watch": "./tests/test.sh -w",
+    "test": "./tests/test.sh",
     "build": "tsc"
   },
+  "files": [
+    "README.md",
+    "dist"
+  ],
   "peerDependencies": {
-    "neo4j-driver": "^4.0.0 || ^5.7.0"
+    "neo4j-driver": "^4.0.0",
+    "next-auth": "^4"
   },
   "devDependencies": {
+    "@next-auth/adapter-test": "workspace:*",
+    "@next-auth/tsconfig": "workspace:*",
     "@types/uuid": "^8.3.3",
-    "neo4j-driver": "^5.7.0"
+    "jest": "^27.4.3",
+    "neo4j-driver": "^4.4.0",
+    "next-auth": "workspace:*"
   },
   "dependencies": {
-    "@auth/core": "workspace:*"
+    "uuid": "^8.3.2"
+  },
+  "jest": {
+    "preset": "@next-auth/adapter-test/jest"
   }
 }
