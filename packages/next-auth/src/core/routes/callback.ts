@@ -37,6 +37,9 @@ export default async function callback(params: {
 
   const useJwtSession = sessionStrategy === "jwt"
 
+  const queryParams = new URLSearchParams(query)
+  const rawQuery = queryParams.toString()
+
   if (provider.type === "oauth") {
     try {
       const {
@@ -96,18 +99,7 @@ export default async function callback(params: {
             profile: OAuthProfile,
           })
           if (!isAllowed) {
-            return { 
-              redirect: `${url}/error?error=AccessDenied`, 
-              cookies,
-              ...query && query.studioId && {
-                headers: [
-                  {
-                    key: "x-pickaxe-studio-id",
-                    value: query.studioId,
-                  }
-                ]
-              }
-            }
+            return { redirect: `${url}/error?error=AccessDenied&${rawQuery}`, cookies }
           } else if (typeof isAllowed === "string") {
             return { redirect: isAllowed, cookies }
           }
@@ -115,16 +107,8 @@ export default async function callback(params: {
           return {
             redirect: `${url}/error?error=${encodeURIComponent(
               (error as Error).message
-            )}`,
+            )}&${rawQuery}`,
             cookies,
-            ...query && query.studioId && {
-              headers: [
-                {
-                  key: "x-pickaxe-studio-id",
-                  value: query.studioId,
-                }
-              ]
-            }
           }
         }
 
