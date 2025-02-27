@@ -96,7 +96,18 @@ export default async function callback(params: {
             profile: OAuthProfile,
           })
           if (!isAllowed) {
-            return { redirect: `${url}/error?error=AccessDenied`, cookies }
+            return { 
+              redirect: `${url}/error?error=AccessDenied`, 
+              cookies,
+              ...query && query.studioId && {
+                headers: [
+                  {
+                    key: "x-pickaxe-studio-id",
+                    value: query.studioId,
+                  }
+                ]
+              }
+            }
           } else if (typeof isAllowed === "string") {
             return { redirect: isAllowed, cookies }
           }
@@ -107,9 +118,12 @@ export default async function callback(params: {
             )}`,
             cookies,
             ...query && query.studioId && {
-              headers: {
-                "x-pickaxe-studio-id": query.studioId,
-              }
+              headers: [
+                {
+                  key: "x-pickaxe-studio-id",
+                  value: query.studioId,
+                }
+              ]
             }
           }
         }
