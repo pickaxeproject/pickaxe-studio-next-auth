@@ -106,6 +106,11 @@ export default async function callback(params: {
               (error as Error).message
             )}`,
             cookies,
+            ...query && query.studioId && {
+              headers: {
+                "x-pickaxe-studio-id": query.studioId,
+              }
+            }
           }
         }
 
